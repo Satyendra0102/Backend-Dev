@@ -1,42 +1,48 @@
-const express = require("express");
-const app = express();
+const http = require('http');
 
-app.use(express.json());
+let todos = [
+    { id: 1, task: 'Buy milk' },
+    { id: 2, task: 'Clean room' }
+];
 
-let todos = [];
-let id = 1;
+const server = http.createServer((req, res) => {
 
-// CREATE todo
-app.post("/todos", (req, res) => {
-  const todo = {
-    id: id++,
-    title: req.body.title,
-  };
+    res.setHeader('Content-Type', 'application/json');
 
-  todos.push(todo);
-  res.json(todo);
+    if (req.url === '/tasks' && req.method === 'GET') {
+        res.end(JSON.stringify(todos));
+    } 
+
+    else if (req.url === '/tasks' && req.method === 'POST') {
+        let body = '';
+        
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            const newTodo = {
+                id: todos.length + 1,
+                task: data.task
+            };
+            todos.push(newTodo);
+            res.end(JSON.stringify(newTodo));
+        });
+    }
+
+    else if (req.url.startsWith('/tasks/') && req.method === 'DELETE') {
+        const id = parseInt(req.url.split('/')[2]);
+        todos = todos.filter(item => item.id !== id);
+        res.end(JSON.stringify({ message: 'Deleted successfully' }));
+    }
+
+    else {
+        res.statusCode = 404;
+        res.end(JSON.stringify({ error: 'Page not found' }));
+    }
 });
 
-// READ all todos
-app.get("/todos", (req, res) => {
-  res.json(todos);
-});
-
-// UPDATE todo
-app.put("/todos/:id", (req, res) => {
-  const todo = todos.find((t) => t.id == req.params.id);
-  if (!todo) return res.send("Not found");
-
-  todo.title = req.body.title;
-  res.json(todo);
-});
-
-// DELETE todo
-app.delete("/todos/:id", (req, res) => {
-  todos = todos.filter((t) => t.id != req.params.id);
-  res.send("Deleted");
-});
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+server.listen(3000, () => {
+    console.log('Server is running on port http://localhost:3000/tasks');
 });
