@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Form</title>
+</head>
+<body>
+
+<h1>Add New Student</h1>
+
+<form action="/students/register" method="POST">
+    <input type="number" name="id" placeholder="Enter ID" required>
+    <input type="text" name="name" placeholder="Enter Name" required>
+
+    <select name="branch">
+        <option value="CSE">CSE</option>
+        <option value="Civil">Civil</option>
+        <option value="Mechanical">Mechanical</option>
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
+
+<hr>
+
+<a href="/students">View All Students</a>
+
+</body>
+</html>
