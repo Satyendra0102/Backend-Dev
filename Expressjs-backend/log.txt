@@ -1,5 +1,0 @@
-Time: 10/2/2026, 10:48:05 am | Method: GET | URL: /students/1
-Time: 10/2/2026, 10:48:11 am | Method: GET | URL: /
-Time: 10/2/2026, 10:48:14 am | Method: GET | URL: /
-Time: 10/2/2026, 10:48:23 am | Method: GET | URL: /
-Time: 10/2/2026, 10:48:57 am | Method: GET | URL: /get
